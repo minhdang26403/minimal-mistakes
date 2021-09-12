@@ -1,6 +1,6 @@
 ---
 
-title: "Blo"
+title: "Blog"
 permalink: /blog/
 layout: categories
 
