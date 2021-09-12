@@ -110,33 +110,36 @@ author:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
       url: "mailto:truong_m1@denison.edu"
+    - label: "Facebook"
+      icon: "fab fa-fw fa-facebook-square"
+      url: "https://www.facebook.com/profile.php?id=100008370399045"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/minhdang26403"
+    - label: "Instagram"
+      icon: "fab fa-fw fa-instagram"
+      # url: "https://instagram.com/"
     - label: "Website"
       icon: "fas fa-fw fa-link"
       # url: "https://your-website.com"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       # url: "https://twitter.com/"
+
+# Site Footer
+footer:
+  links:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:truong_m1@denison.edu"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
       url: "https://www.facebook.com/profile.php?id=100008370399045"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      # url: "https://github.com/"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      # url: "https://instagram.com/"
-
-# Site Footer
-footer:
-  links:
+      url: "https://github.com/minhdang26403"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
-      # url:
-    - label: "Facebook"
-      icon: "fab fa-fw fa-facebook-square"
-      # url:
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
       # url:
     - label: "GitLab"
       icon: "fab fa-fw fa-gitlab"
