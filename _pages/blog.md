@@ -1,9 +1,8 @@
 ---
 
-title: "Learning Review"
+title: "Blo"
 permalink: /blog/
 layout: categories
-header:
-  image: /assets/images/yoona.jpg
 
 ---
+Computer science related blogs
