@@ -71,7 +71,7 @@ google:
   search_engine_id       : # YOUR_SEARCH_ENGINE_ID
   instant_search         : # false (default), true
 # SEO Related
-google_site_verification : "googleda7a34c3ac5b0a70.html"
+google_site_verification : 
 bing_site_verification   :
 yandex_site_verification :
 naver_site_verification  :
@@ -101,10 +101,10 @@ analytics:
 
 # Site Author
 author:
-  name             : "Your Name"
+  name             : "Dang Minh Truong"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an **amazing** person."
-  location         : "Somewhere"
+  bio              : "I am a computer science major at Denison University"
+  location         : "Granville, Ohio"
   email            :
   links:
     - label: "Email"
