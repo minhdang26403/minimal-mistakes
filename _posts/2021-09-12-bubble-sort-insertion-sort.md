@@ -94,8 +94,21 @@ To determine time complexity, we need to count the number of comparisons, which 
 | last | 1                     |
 
 Therefore, the total number of comparisons is
-$$ (n-1) + (n-2) + (n-3) + ... + 1 = \frac{n(n-1)}{2} = \mathcal{O}(n^2) $$
+$$ (n-1) + (n-2) + (n-3) + ... + 1 = \frac{n(n-1)}{2} = O(n^2) $$
 
-- **Worst case and average case**: In both cases, the algorithm needs to do $N$ iterations. In each iteration, it still does the comparison and swapping if needed. Although the optimized version performs fewer swaps compared to standard one, it still needs to do the same number of comparisons. Therefore, the **time complexity** for both algorithms: $ \mathcal{O}(n^2) $
+##### Standard bubble sort:
+- **Worst case and average case**: In both cases, the algorithm needs to do $N$ iterations. In each iteration, it does the same number of comparisons, although there are fewer swaps in average case compared to worst case. Therefore, the **time complexity** for both cases: $ O(n^2) $
 
-- **Best case (the array is already sorted)**: The **time complexity** of standard algorithm is still $ \mathcal{O}(n^2) $ . However, with the optimized algorithm, after one iteration over array, it will terminate because there are not any possible swaps. Therefore, the **time complexity** of optimized version will be $ \mathcal{O}(n) $
+- **Best case (the array is already sorted)**: The **time complexity** of standard algorithm is still $ O(n^2) $ because the the algorithm does not know if the array is in correct order.
+
+##### Optimized bubble sort:
+
+- **Worst case and average case**: Though there is a little improvement in the performance of optimized version in the worst and average case, its time complexity is still $ O(n^2) $
+- **Best case**: Since the array is already sorted, the algorithm traverse over it once and terminate after finding no possible swaps. Hence, the time complexity is $ O(n^2) $
+
+#### 2. Space complexity
+
+Because bubble sort is a in-place sorting algorithm, the auxiliary space for it is $ O(1) $
+
+# Insertion sort
+
