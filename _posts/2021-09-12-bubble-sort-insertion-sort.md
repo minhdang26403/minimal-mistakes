@@ -8,7 +8,7 @@ toc_label: ""
 
 ## Overview
 
-This post will cover two simple sorting algorithms - bubble sort and insertion sort. They are simple, yet they perform poorly in real world as the number of elements needed to be sorted gets larger. Therefore, they are often used as educational tools for introductory courses to algorithms, and more importantly, as typical examples of inefficient algorithms. 
+This post will cover two sorting algorithms - bubble sort and insertion sort. They are simple, yet they perform poorly in real world as the number of elements needed to be sorted gets larger. Therefore, they are often used as educational tools for introductory courses to algorithms, and more importantly, as typical examples of inefficient algorithms. 
 
 ## Why is sorting necessary?
 
@@ -16,7 +16,7 @@ There are several obvious applications of sorting such as organizing posts by da
 
 # Bubble sort
 
-## Definition
+## What is Bubble Sort?
 
 **Bubble sort** is a **comparison sort** that works by repeatedly stepping through the list, comparing each pair of adjacent items and swapping them if they are in the wrong order. If we have $n$ items, we need to iterate over the list for $n-1$ times. The algorithm is known as bubble sort because after every complete iteration, the largest element in the given array bubbles up towards the last place, just like the movement of air bubbles in the water that float to the surface and stay there. 
 
@@ -79,9 +79,9 @@ def bubble_sort(arr):
 
 ## Complexity Analysis
 
-### Performance
+## Performance
 
-#### 1. Time complexity 
+### 1. Time complexity 
 
 To determine time complexity, we need to count the number of comparisons, which dominates the number of swaps (the algorithm always compare two adjacent elements but doesn't necessarily swap them)
 
@@ -96,19 +96,50 @@ To determine time complexity, we need to count the number of comparisons, which 
 Therefore, the total number of comparisons is
 $$ (n-1) + (n-2) + (n-3) + ... + 1 = \frac{n(n-1)}{2} = O(n^2) $$
 
-##### Standard bubble sort:
+#### Standard bubble sort:
 - **Worst case and average case**: In both cases, the algorithm needs to do $N$ iterations. In each iteration, it does the same number of comparisons, although there are fewer swaps in average case compared to worst case. Therefore, the **time complexity** for both cases: $ O(n^2) $
 
 - **Best case (the array is already sorted)**: The **time complexity** of standard algorithm is still $ O(n^2) $ because the the algorithm does not know if the array is in correct order.
 
-##### Optimized bubble sort:
+#### Optimized bubble sort:
 
 - **Worst case and average case**: Though there is a little improvement in the performance of optimized version in the worst and average case, its time complexity is still $ O(n^2) $
-- **Best case**: Since the array is already sorted, the algorithm traverse over it once and terminate after finding no possible swaps. Hence, the time complexity is $ O(n^2) $
+- **Best case**: Since the array is already sorted, the algorithm traverse over it once and terminate after finding no possible swaps. Hence, the time complexity is $ O(n) $
 
-#### 2. Space complexity
+### 2. Space complexity
 
 Because bubble sort is a in-place sorting algorithm, the auxiliary space for it is $ O(1) $
 
 # Insertion sort
 
+## How does Insertion Sort work?
+
+The algorithm works like most people would sort playing cards in their hands. We start with a section of card we have sorted, then we add or "insert" one more card into its proper place in that sorted section. Eventually, after all of the cards are inserted into their place one after another, we'll have the entire hand of cards sorted.
+
+**Algorithm**
+
+To sort an array of $n$ elements in ascending order: 
+1. Iterate the array from the second element.
+2. At each iteration, pick the current element as a key and compare it with elements before it.
+3. If the key element is smaller than the element before it, shift that element to the right to create space for the key. The process is repeated until the key is inserted into correct position.
+4. After all iterations, we should get our array sorted in ascending order. 
+
+## Binary Insertion Sort
+
+When the algorithm first starts, the first element by itself is already sorted. Therefore, after $k$ iterations, there are $k+1$ elements that are in correct order. Knowing that property, we can use binary search to find right position to insert the key instead of scanning through all the elements before it. 
+
+## Implementation
+
+```python
+def insertion_sort(arr):
+    n = len(arr)
+    for i in range(1, n):
+        key = arr[i]
+        j = i - 1
+        while j > -1 and arr[j] > key:
+            arr[j+1] = arr[j]   #Move elements that are greater than key
+            j -= 1              
+        arr[j+1] = key          #Insert key to the right position
+```
+
+## Complexity analysis
