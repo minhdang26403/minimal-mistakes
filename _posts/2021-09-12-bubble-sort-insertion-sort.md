@@ -3,6 +3,7 @@ title: "Bubble sort - Insertion sort"
 categories: Sorting
 toc: true
 toc_label: ""
+toc_sticky: true
 ---
 # Introduction
 
@@ -10,6 +11,13 @@ toc_label: ""
 
 This post will cover two sorting algorithms - bubble sort and insertion sort. They are simple, yet they perform poorly in real world as the number of elements needed to be sorted gets larger. Therefore, they are often used as educational tools for introductory courses to algorithms, and more importantly, as typical examples of inefficient algorithms. 
 
+## The sorting problem
+
+The problem called sorting problem is specified by the following input and output pair:
+- Input: A sequence of $n$ numbers $(a_1, a_2, ..., a_n)$.
+- Output: A permutation $(b_1, b_2, ..., b_n)$ of the input sequence such that $ b_1 \le b_2 \le ... \le b_n $.
+
+A sequence $(a_n)$ is sorted if and only if for all $i \lt j, a_i \le a_j$.
 ## Why is sorting necessary?
 
 There are several obvious applications of sorting such as organizing posts by date or maintaining a telephone directory in alphabetical order. Besides that, some problems will become easier thanks to sorting, for example binary search, finding a median, and identifying statistical outliers.
@@ -79,8 +87,6 @@ def bubble_sort(arr):
 
 ## Complexity Analysis
 
-## Performance
-
 ### 1. Time complexity 
 
 To determine time complexity, we need to count the number of comparisons, which dominates the number of swaps (the algorithm always compare two adjacent elements but doesn't necessarily swap them)
@@ -96,12 +102,12 @@ To determine time complexity, we need to count the number of comparisons, which 
 Therefore, the total number of comparisons is
 $$ (n-1) + (n-2) + (n-3) + ... + 1 = \frac{n(n-1)}{2} = O(n^2) $$
 
-#### Standard bubble sort:
+#### Standard bubble sort
 - **Worst case and average case**: In both cases, the algorithm needs to do $N$ iterations. In each iteration, it does the same number of comparisons, although there are fewer swaps in average case compared to worst case. Therefore, the **time complexity** for both cases: $ O(n^2) $
 
 - **Best case (the array is already sorted)**: The **time complexity** of standard algorithm is still $ O(n^2) $ because the the algorithm does not know if the array is in correct order.
 
-#### Optimized bubble sort:
+#### Optimized bubble sort
 
 - **Worst case and average case**: Though there is a little improvement in the performance of optimized version in the worst and average case, its time complexity is still $ O(n^2) $
 - **Best case**: Since the array is already sorted, the algorithm traverse over it once and terminate after finding no possible swaps. Hence, the time complexity is $ O(n) $
@@ -124,9 +130,13 @@ To sort an array of $n$ elements in ascending order:
 3. If the key element is smaller than the element before it, shift that element to the right to create space for the key. The process is repeated until the key is inserted into correct position.
 4. After all iterations, we should get our array sorted in ascending order. 
 
+|![pic1]({{ site.url }}{{ site.baseurl }}/assets/images/bubble_insertion_sort/insertion_sort.png)|
+|:--:|
+| *Example of Insertion Sort* [^1]|
+
 ## Binary Insertion Sort
 
-When the algorithm first starts, the first element by itself is already sorted. Therefore, after $k$ iterations, there are $k+1$ elements that are in correct order. Knowing that property, we can use binary search to find right position to insert the key instead of scanning through all the elements before it. 
+When the algorithm first starts, the first element by itself is already sorted. Therefore, after $k$ iterations, there are $k+1$ elements that are in correct order. Knowing that property, we can use binary search in $A[0...i-1]$ to find right position the for key $A[i]$ instead of scanning through all the elements before it. ($A[i]$ is the element at index $i$ of array $A$)
 
 ## Implementation
 
@@ -137,9 +147,52 @@ def insertion_sort(arr):
         key = arr[i]
         j = i - 1
         while j > -1 and arr[j] > key:
-            arr[j+1] = arr[j]   #Move elements that are greater than key
+            arr[j+1] = arr[j]   #Shift elements that are greater than key to the right
             j -= 1              
         arr[j+1] = key          #Insert key to the right position
 ```
 
 ## Complexity analysis
+
+### 1. Time complexity
+
+To calculate the running time of insertion sort, we need to know the amount of time required to execute each line of the algorithm. We assume that the $ith$ line takes $c_i$ time to run, where $c_i$ is a constant. For each $j=2,...,n$, where $n$ is the number of elements in array $A$, we let $t_j$ denote the number of times the while loop in line $4$ is executed for that value of $j$ (we use one-based indexing in this example). It is important to note that the test in **while** or **for** loop runs one more time than the body of loop because it needs to check the condition. If it fails, the loop will terminate.
+
+**insertion_sort(A):**&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;*cost*&emsp;&emsp;&emsp;&emsp;*times*         
+
+1&emsp;&emsp;for $j=2$ to $n$:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;$c_1$                    $n$
+
+2&emsp;&emsp;&emsp;&emsp;$key = A[j]$                                      $c_2$                    $n-1$
+
+3&emsp;&emsp;&emsp;&emsp;$i = j - 1$                                         $c_3$                    $n-1$
+
+4&emsp;&emsp;&emsp;&emsp;while $i > 0$ and $A[i] > key:$       $c_4$                    $\sum_{j=2}^n t_j$
+
+5&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;$A[i+1] = A[i]$                      $c_5$                    $\sum_{j=2}^n(t_j-1)$
+
+6&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;$i = i - 1$                                  $c_6$                    $\sum_{j=2}^n(t_j-1)$
+
+7&emsp;&emsp;&emsp;&emsp;$A[i+1] = key$                               $c_7$                    $n-1$ 
+
+The running time of the algorithm is the sum of the running time of each statement. A statement that runs in $c_i$ time and executes $n$ times will takes $c_{i}n$ time to run in total. Thus, the running time $T(n)$ of **insertion_sort(A)** is
+
+$$
+T(n) = c_1n + c_2(n-1) + c_3(n-1) + c_4\sum_{j=2}^n t_j + c_5\sum_{j=2}^n(t_j-1) \\
++ c_6\sum_{j=2}^n(t_j-1) + c_7(n-1)
+$$
+
+
+In addition to the size of input, the algorithm's running time may depend on which input of that size is given. 
+- First, we consider the best case, which is the array is already sorted. For each $j=2,3,...,n$, $A[i] \le key$  with $i = j-1$. Therefore, $t_j = 1$ for $j=2,3,...,n$, and the best-case running time is
+
+$$
+\begin{aligned} T(n) &= c_1n + c_2(n-1) + c_3(n-1) + c_4\sum_{j=2}^n 1 + c_5\sum_{j=2}^n(1-1) \\
++ c_6\sum_{j=2}^n(1-1) + c_7(n-1) \\
+&= c_1n + c_2(n-1) + c_3(n-1) + c_4(n-1) + c_7(n-1) \\
+&= (c_1 + c_2 + c_3 + c_4 + c_7)n - (c_2+c_3+c_4+c_7) \\
+&= O(n) 
+\end{aligned}
+$$
+
+
+[^1]: Cormen, T., Leiserson, C., Rivest, R., & Stein, C. (2001). Introduction to Algorithms (2nd edition) (pp. 15-21). The MIT Press.
