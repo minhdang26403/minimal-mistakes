@@ -186,12 +186,10 @@ In addition to the size of input, the algorithm's running time may depend on whi
 - First, we consider the best case, which is the array is already sorted. For each $j=2,3,...,n$, $A[i] \le key$  with $i = j-1$. Therefore, $t_j = 1$ for $j=2,3,...,n$, and the best-case running time is
 
 $$
-\begin{aligned} T(n) &= c_1n + c_2(n-1) + c_3(n-1) + c_4\sum_{j=2}^n 1 + c_5\sum_{j=2}^n(1-1) \\
-+ c_6\sum_{j=2}^n(1-1) + c_7(n-1) \\
-&= c_1n + c_2(n-1) + c_3(n-1) + c_4(n-1) + c_7(n-1) \\
-&= (c_1 + c_2 + c_3 + c_4 + c_7)n - (c_2+c_3+c_4+c_7) \\
-&= O(n) 
-\end{aligned}
+T(n) = c_1n + c_2(n-1) + c_3(n-1) + c_4\sum_{j=2}^n 1 + c_7(n-1) \\
+= c_1n + c_2(n-1) + c_3(n-1) + c_4(n-1) + c_7(n-1) \\
+= (c_1 + c_2 + c_3 + c_4 + c_7)n - (c_2+c_3+c_4+c_7) \\
+= O(n) 
 $$
 
 
