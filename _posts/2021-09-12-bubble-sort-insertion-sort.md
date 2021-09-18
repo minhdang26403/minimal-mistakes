@@ -138,6 +138,8 @@ To sort an array of $n$ elements in ascending order:
 
 When the algorithm first starts, the first element by itself is already sorted. Therefore, after $k$ iterations, there are $k+1$ elements that are in correct order. Knowing that property, we can use binary search in $A[0...i-1]$ to find right position the for key $A[i]$ instead of scanning through all the elements before it. ($A[i]$ is the element at index $i$ of array $A$)
 
+We know that binary search algorithm runs in $O(log\;n)$ for an input of size $n$. Using binary search, we can reduce the time for searching position for the key, but shifting elements to the right to insert key still takes $\Theta(n)$ time.[^2]
+
 ## Implementation
 
 ```python
@@ -156,7 +158,7 @@ def insertion_sort(arr):
 
 ### 1. Time complexity
 
-To calculate the running time of insertion sort, we need to know the amount of time required to execute each line of the algorithm. We assume that the $ith$ line takes $c_i$ time to run, where $c_i$ is a constant. For each $j=2,...,n$, where $n$ is the number of elements in array $A$, we let $t_j$ denote the number of times the while loop in line $4$ is executed for that value of $j$ (we use one-based indexing in this example). It is important to note that the test in **while** or **for** loop runs one more time than the body of loop because it needs to check the condition. If it fails, the loop will terminate.
+To calculate the running time of insertion sort, we need to know the amount of time required to execute each line of the algorithm. We assume that the $i$th line takes $c_i$ time to run, where $c_i$ is a constant. For each $j=2,...,n$, where $n$ is the number of elements in array $A$, we let $t_j$ denote the number of times the while loop in line $4$ is executed for that value of $j$ (we use one-based indexing in this example). It is important to note that the test in **while** or **for** loop runs one more time than the body of loop because it needs to check the condition. If it fails, the loop will terminate.[^1]
 
 **insertion_sort(A):**&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;*cost*&emsp;&emsp;&emsp;&emsp;*times*         
 
@@ -183,14 +185,43 @@ $$
 
 
 In addition to the size of input, the algorithm's running time may depend on which input of that size is given. 
-- First, we consider the best case, which is the array is already sorted. For each $j=2,3,...,n$, $A[i] \le key$  with $i = j-1$. Therefore, $t_j = 1$ for $j=2,3,...,n$, and the best-case running time is
+- First, we consider the best case, which is the array is already sorted. For each $j=2,3,...,n$, $A[i] \le key$  with $i = j-1$. The inner loop only checks condition but doesn't run the loop body. Therefore, $t_j = 1$ for $j=2,3,...,n$, and the best-case running time is
 
 $$
-T(n) = c_1n + c_2(n-1) + c_3(n-1) + c_4\sum_{j=2}^n 1 + c_7(n-1) \\
-= c_1n + c_2(n-1) + c_3(n-1) + c_4(n-1) + c_7(n-1) \\
-= (c_1 + c_2 + c_3 + c_4 + c_7)n - (c_2+c_3+c_4+c_7) \\
-= O(n) 
+T(n) = c_1n + c_2(n-1) + c_3(n-1) + c_4\sum_{j=2}^n 1 + c_7(n-1) \;\;\;\;\;\;\\
+\;\;\;\;\,= c_1n + c_2(n-1) + c_3(n-1) + c_4(n-1) + c_7(n-1) \\
+= (c_1 + c_2 + c_3 + c_4 + c_7)n - (c_2+c_3+c_4+c_7) \;\;\;\,\\
+= O(n) \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\;
 $$
 
+- Next, we consider the worst case - the array is sorted in descending order. The algorithm must compare each element $A[j]$ with each element in the subarray $A[1...j-1]$, so $t_j=j$ for $j=2,3,...,n$. Notice that 
 
+$$
+\sum_{j=2}^n j = \frac{(n+2)(n-1)}{2} = \frac{n^2+n-2}{2} = \frac{n(n+1)}{2} - 1 \;\\
+\sum_{j=2}^n (j-1) = \frac{n(n-1)}{2} \qquad\qquad\qquad\qquad\qquad\qquad\qquad 
+$$
+
+Thus, the running time of Insertion sort in worst case is 
+
+$$
+T(n) = c_1n + c_2(n-1) + c_3(n-1) + c_4(\frac{n(n+1)}{2} - 1) \qquad\qquad\qquad\;\;\;\\
++ c_5(\frac{n(n-1)}{2}) + c_6(\frac{n(n-1)}{2}) + c_7(n-1) \qquad\qquad\qquad\\
+= (\frac{c_4}{2} + \frac{c_5}{2} + \frac{c_6}{2})n^2 + (c_1 + c_2 + c_3 + \frac{c_4}{2} - \frac{c_5}{2} - \frac{c_6}{2} + c_7)n \\
+- (c_2 + c_3 + c_4 + c_7) \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\\
+= O(n^2) \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\;\;
+$$
+
+When calculating the asymptotic running time of an algorithm, we consider only the leading term of a formula and ignore the lower-order terms and constant factors because they are less significant as inputs become larger. This observation will allow us to determine the efficiency of a complex algorithm in a simpler way.
+
+### 2. Space complexity
+
+Insertion sort is an in-place sorting algorithm. Thus, its space complexity is $O(1)$
+
+# Conclusion
+
+In this post, we covered two simple but inefficient sorting algorithms. Due to their inefficiency, these two algorithms are not used widely in practice. Later posts will cover more advanced algorithms which have better asymptotic running time.  
+
+References
+---
 [^1]: Cormen, T., Leiserson, C., Rivest, R., & Stein, C. (2001). Introduction to Algorithms (2nd edition) (pp. 15-21). The MIT Press.
+[^2]: Srini Devadas , S. 6.006 Introduction to Algorithms: Lecture 3, Fall 2011.
