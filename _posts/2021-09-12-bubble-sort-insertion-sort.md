@@ -138,7 +138,7 @@ To sort an array of $n$ elements in ascending order:
 
 When the algorithm first starts, the first element by itself is already sorted. Therefore, after $k$ iterations, there are $k+1$ elements that are in correct order. Knowing that property, we can use binary search in $A[0...i-1]$ to find right position the for key $A[i]$ instead of scanning through all the elements before it. ($A[i]$ is the element at index $i$ of array $A$)
 
-We know that binary search algorithm runs in $O(log\;n)$ for an input of size $n$. Using binary search, we can reduce the time for searching position for the key, but shifting elements to the right to insert key still takes $\Theta(n)$ time.[^2]
+We know that binary search algorithm runs in $O(log_2n)$ for an input of size $n$. Using binary search, we can reduce the time for searching position for the key, but shifting elements to the right to insert key still takes $\Theta(n)$ time.[^2]
 
 ## Implementation
 
@@ -219,9 +219,9 @@ Insertion sort is an in-place sorting algorithm. Thus, its space complexity is $
 
 # Conclusion
 
-In this post, we covered two simple but inefficient sorting algorithms. Due to their inefficiency, these two algorithms are not used widely in practice. Later posts will cover more advanced algorithms which have better asymptotic running time.  
+In this post, we covered two simple but inefficient sorting algorithms. Due to their inefficiency, these two algorithms are not used widely in practice. Later posts will cover more advanced algorithms which have better asymptotic running times.  
 
 References
 ---
-[^1]: Cormen, T., Leiserson, C., Rivest, R., & Stein, C. (2001). Introduction to Algorithms (2nd edition) (pp. 15-21). The MIT Press.
-[^2]: Srini Devadas , S. 6.006 Introduction to Algorithms: Lecture 3, Fall 2011.
+[^1]: Cormen, Thomas H.; Leiserson, Charles E.; Rivest, Ronald L.; Stein, Clifford (2001) [1990]. Introduction to Algorithms (2nd ed.).
+[^2]: Srini Devadas, S. 6.006 Introduction to Algorithms: Lecture 3, Fall 2011.
