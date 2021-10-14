@@ -24,7 +24,7 @@ There are several obvious applications of sorting such as organizing posts by da
 
 # Bubble sort
 
-## What is Bubble Sort?
+## What is Bubble sort?
 
 **Bubble sort** is a **comparison sort** that works by repeatedly stepping through the list, comparing each pair of adjacent items and swapping them if they are in the wrong order. If we have $n$ items, we need to iterate over the list for $n-1$ times. The algorithm is known as bubble sort because after every complete iteration, the largest element in the given array bubbles up towards the last place, just like the movement of air bubbles in the water that float to the surface and stay there. 
 
@@ -55,7 +55,7 @@ Consider we need to sort the array [6, 2, 5, 3, 9] in ascending order. In each s
 
 The array is already sorted after the second pass, but the algorithm does not know whether it is completed. In this case, as we specify *four* passes for the array of *five* elements, the algorithm needs two more passes to complete without changing anything in the array. 
 
-The **redundant passes** through the list motivate us to think about how to **eliminate** them. In fact, we can optimize this algorithm by adding an extra variable `swapped` inside a loop. If there occurs swapping of elements, `swapped` will be set to **true**. Otherwise, it is set to **false**
+The **redundant passes** through the list motivate us to think about how to **eliminate** them. In fact, we can optimize this algorithm by adding an extra variable `swapped` inside a loop. If there occurs swapping of elements, `swapped` will be set to **true**. Otherwise, it is set to **false**.
 
 ## Implementation
 
@@ -89,7 +89,7 @@ def bubble_sort(arr):
 
 ### 1. Time complexity 
 
-To determine time complexity, we need to count the number of comparisons, which dominates the number of swaps (the algorithm always compare two adjacent elements but doesn't necessarily swap them)
+To determine time complexity, we need to count the number of comparisons, which dominates the number of swaps (the algorithm always compare two adjacent elements but doesn't necessarily swap them).
 
 | Pass | Number of comparisons |
 | ---- | --------------------- |
@@ -109,16 +109,16 @@ $$ (n-1) + (n-2) + (n-3) + ... + 1 = \frac{n(n-1)}{2} = O(n^2) $$
 
 #### Optimized bubble sort
 
-- **Worst case and average case**: Though there is a little improvement in the performance of optimized version in the worst and average case, its time complexity is still $ O(n^2) $
-- **Best case**: Since the array is already sorted, the algorithm traverse over it once and terminate after finding no possible swaps. Hence, the time complexity is $ O(n) $
+- **Worst case and average case**: Though there is a little improvement in the performance of optimized version in the worst and average case, its time complexity is still $ O(n^2) $.
+- **Best case**: Since the array is already sorted, the algorithm traverse over it once and terminate after finding no possible swaps. Hence, the time complexity is $ O(n) $.
 
 ### 2. Space complexity
 
-Because bubble sort is a in-place sorting algorithm, the auxiliary space for it is $ O(1) $
+Because bubble sort is a in-place sorting algorithm, the auxiliary space for it is $ O(1) $.
 
 # Insertion sort
 
-## How does Insertion Sort work?
+## How does Insertion sort work?
 
 The algorithm works like most people would sort playing cards in their hands. We start with a section of card we have sorted, then we add or "insert" one more card into its proper place in that sorted section. Eventually, after all of the cards are inserted into their place one after another, we'll have the entire hand of cards sorted.
 
@@ -134,7 +134,7 @@ To sort an array of $n$ elements in ascending order:
 |:--:|
 | *Example of Insertion Sort* [^1]|
 
-## Binary Insertion Sort
+## Binary Insertion sort
 
 When the algorithm first starts, the first element by itself is already sorted. Therefore, after $k$ iterations, there are $k+1$ elements that are in correct order. Knowing that property, we can use binary search in $A[0...i-1]$ to find right position the for key $A[i]$ instead of scanning through all the elements before it. ($A[i]$ is the element at index $i$ of array $A$)
 
@@ -215,7 +215,7 @@ When calculating the asymptotic running time of an algorithm, we consider only t
 
 ### 2. Space complexity
 
-Insertion sort is an in-place sorting algorithm. Thus, its space complexity is $O(1)$
+Insertion sort is an in-place sorting algorithm. Thus, its space complexity is $O(1)$.
 
 # Conclusion
 
