@@ -75,8 +75,8 @@ def bubble_sort(arr):
 ```python
 def bubble_sort(arr):
     n = len(arr)
-    swapped = False
     for i in range(0, n - 1):
+        swapped = False
         for j in range(0, n - i - 1): #Last i elements are already in place
             if arr[j] > arr[j+1]:
                 arr[j], arr[j+1] = arr[j+1], arr[j]
@@ -211,7 +211,7 @@ T(n) = c_1n + c_2(n-1) + c_3(n-1) + c_4(\frac{n(n+1)}{2} - 1) \qquad\qquad\qquad
 = O(n^2) \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\;\;
 $$
 
-When calculating the asymptotic running time of an algorithm, we consider only the leading term of a formula and ignore the lower-order terms and constant factors because they are less significant as inputs become larger. This observation will allow us to determine the efficiency of a complex algorithm in a simpler way.
+When calculating the asymptotic running time of an algorithm, we consider only the leading term of a formula and ignore the lower-order terms and constant factors because they are less significant as inputs become larger. This observation will allow us to determine the efficiency of a complex algorithm in a more simple way.
 
 ### 2. Space complexity
 
@@ -223,5 +223,6 @@ In this post, we covered two simple but inefficient sorting algorithms. Due to t
 
 References
 ---
-[^1]: Cormen, Thomas H.; Leiserson, Charles E.; Rivest, Ronald L.; Stein, Clifford (2001) [1990]. Introduction to Algorithms (2nd ed.).
+[^1]: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein: Introduction to Algorithms, 3rd Edition. MIT Press 2009, ISBN 978-0-262-03384-8, pp. 17-29.
+
 [^2]: Srini Devadas, S. 6.006 Introduction to Algorithms: Lecture 3, Fall 2011.

@@ -7,7 +7,7 @@ toc_sticky: true
 ---
 # Introduction
 
-The two sorting algorithms we have seen so far, bubble sort and insertion sort, have worst-case running times of $O(n^2)$. These two algorithms are inefficient as the size of the input array becomes arbitrarily large. This post will introduce a new **comparison-based** sorting algorithm - merge sort, which can run in $O(n\lg n)$ time in all cases (we will use $\lg n$ to denote $log_2\,n$ for this post and all later posts). Asymptotically, this is a tremendous improvement over our previous sorting algorithms. The graph below compares the growth of $f(n)=n^2$ and $f(n)=n\lg n$.
+The two sorting algorithms we have seen so far, bubble sort and insertion sort, have worst-case running times of $O(n^2)$. These two algorithms are inefficient as the size of the input array becomes arbitrarily large. This post will introduce two new **comparison-based** sorting algorithms - merge sort and quick sort, which can run in $O(n\lg n)$ time in all cases (we will use $\lg n$ to denote $log_2\,n$ for this post and all later posts). Asymptotically, this is a tremendous improvement over our previous sorting algorithms. The graph below compares the growth of $f(n)=n^2$ and $f(n)=n\lg n$.
 
 ![growthOfFunction]({{ site.url }}{{ site.baseurl }}/assets/images/merge_sort/growth.png)
 
@@ -36,7 +36,7 @@ The algorithm reaches the base case when the subarray has the size of 1, in whic
 The key subroutine of the merge sort algorithm is merging two sorted arrays into a sorted one. We merge by calling an auxiliary function $merge(A,p,q,r)$, where $A$ is an array and $p,q,$ and $r$ are indices of the array such that $p \le q \lt r$. Assuming that the subarrays $A[p..q]$ and $A[q+1..r]$ are sorted, the $merge(A,p,q,r)$ function merges them into a single subarray that replaces the current subarray $A[p..r]$.
 
 The merging process works as follows: 
-- First, we have two pointers (indicated by yellow circles) pointing to the smallest elements of subarrays, which are already sorted. 
+- First, we have two pointers (indicated by yellow circles) pointing to the smallest elements of two subarrays, which are already sorted. 
 - We compare the two first elements, then place the smaller element into the output array and move the pointer to the next element of the smaller element. We repeat this step until one input array is empty, at which time we just take the remaining input array and put them into the output array. Comparing two elements takes constant time, and we do it at most $n$ times, where $n=r-p+1$. Therefore, the merge procedure takes $\Theta(n)$.
 
 ![mergeProcedure]({{ site.url }}{{ site.baseurl }}/assets/images/merge_sort/merge.png)[^3]
@@ -136,18 +136,26 @@ Without the master theorem, we can solve this recurrence intuitively by using th
 
 ![RecurrenceTree]({{ site.url }}{{ site.baseurl }}/assets/images/merge_sort/recur_tree2.png)[^1]
 
-From the images above, we can see that the level $i$ of the tree has $2^i$ nodes (the root is level $0$), each taking $c(n/2^i)$ 
-time to run, so that the cost of level $i$ is $2^i.c(n/2^i)=cn$. Because we start with an array of $n$ elements, there will be $n$ subarrays of size 1. In other words, the last level of the tree has $n$ nodes. To calculate the total running time of the algorithm, we just add up the cost of each level, so the merge sort algorithm takes $l.cn$ time to run, where $l$ is the number levels of the tree. 
+From the images above, we can see that the level $i$ of the tree has $2^i$ nodes (the root is level $0$). Each node representing a subproblem takes $c(n/2^i)$ 
+time to run, so that the cost of level $i$ is $2^i.c(n/2^i)=cn$. Because we start with an array of $n$ elements, there will be $n$ subarrays of size 1. In other words, the last level of the tree has $n$ nodes. To calculate the total running time of the algorithm, we add up the cost of each level, so the merge sort algorithm takes $l.cn$ time to run, where $l$ is the number of levels of the tree. 
 
-Now we just need to compute $l$ to get the solution. Noting that the bottom level has $n$ nodes, so $2^i = n \iff i = \lg n$. We start at level $0$, so the tree has $\lg n + 1$ levels in total. 
+Now we need to compute $l$ to get the solution. Noting that the bottom level has $n$ nodes, so $2^i = n \iff i = \lg n$. We start at level $0$, so the tree has $\lg n + 1$ levels in total. 
 
-Thus, the total cost of the algorithm is $cn(\lg n + 1) = cn\lg n + cn$. When considering the asymptotic running time, we can discard the lower-order term $cn$, giving us the result of $\Theta(n)$.
+Thus, the total cost of the algorithm is $cn(\lg n + 1) = cn\lg n + cn$. When considering the asymptotic running time, we can discard the lower-order term $cn$, giving us the result of $\Theta(n\lg n)$.
+
+In addition, the space complexity for the merge sort algorithm is $O(n)$. Because this algorithm involves recursion, additional memory for "call stack" is required. Although merge sort triggers two recursive calls each time, only one of those two calls executes at a time. The first call on the left part of the array ends before the second call starts. Think about the recursion tree before. This order is equivalent to exploring the leftmost branch of the tree until the program executes the right branch. 
+
+Because the depth of the recursion tree is at most $\lg n + 1$, the maximum height of the "call stack" is $\lg n + 1$.
+
+Moreover, we need to create two subarrays $L$ and $R$ at each level. However, the computer memory will clear those arrays after the function ends. Therefore, we only need at most $O(n)$ auxiliary space when merging two arrays, each with the size of $n/2$, into the final array.
+
+Hence, the total space complexity for merge sort is $O(n + \lg n + 1) = O(n)$ (linear factor is dominant over logarithmic factor in terms of asymptotic growth).
 
 # Quicksort
 
 
 References
 ---
-[^1]: Cormen, Thomas H.; Leiserson, Charles E.; Rivest, Ronald L.; Stein, Clifford (2001) [1990]. Introduction to Algorithms (2nd ed.).
+[^1]: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein: Introduction to Algorithms, 3rd Edition. MIT Press 2009, ISBN 978-0-262-03384-8, pp. 30-37.
 [^2]: Thomas Cormen, Devin Balkcom, Khan Academy computing curriculum team. Algorithms, Merge sort.  CC-BY-NC-SA License
 [^3]: Srini Devadas, S. 6.006 Introduction to Algorithms: Lecture 3, Fall 2011.
