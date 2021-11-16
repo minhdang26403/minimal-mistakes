@@ -26,6 +26,8 @@ The divide-and-conquer paradigm involves three steps:
 
 # Merge sort
 
+## How does merge sort work?
+
 The **merge sort** employs the divide-and-conquer paradigm. Specifically, it operates as follows
 - **Divide**: Divide the array of $n$ elements into two subarrays of $n/2$ elements each. 
 - **Conquer**: Sort the two subarrays recursively using merge sort.
@@ -143,15 +145,66 @@ Now we need to compute $l$ to get the solution. Noting that the bottom level has
 
 Thus, the total cost of the algorithm is $cn(\lg n + 1) = cn\lg n + cn$. When considering the asymptotic running time, we can discard the lower-order term $cn$, giving us the result of $\Theta(n\lg n)$.
 
-In addition, the space complexity for the merge sort algorithm is $O(n)$. Because this algorithm involves recursion, additional memory for "call stack" is required. Although merge sort triggers two recursive calls each time, only one of those two calls executes at a time. The first call on the left part of the array ends before the second call starts. Think about the recursion tree before. This order is equivalent to exploring the leftmost branch of the tree until the program executes the right branch. 
+In addition, the space complexity for the merge sort algorithm is $O(n)$. Because this algorithm involves recursion, additional memory for "call stack" is required. Although merge sort triggers two recursive calls each time, only one of those two calls executes at a time. The first call on the left part of the array ends before the second call starts. Think about the recursion tree before. This order is equivalent to going to the leftmost branch of the tree until we reach the leaves (bottom) of the recursion tree. 
 
 Because the depth of the recursion tree is at most $\lg n + 1$, the maximum height of the "call stack" is $\lg n + 1$.
 
 Moreover, we need to create two subarrays $L$ and $R$ at each level. However, the computer memory will clear those arrays after the function ends. Therefore, we only need at most $O(n)$ auxiliary space when merging two arrays, each with the size of $n/2$, into the final array.
 
-Hence, the total space complexity for merge sort is $O(n + \lg n + 1) = O(n)$ (linear factor is dominant over logarithmic factor in terms of asymptotic growth).
+Hence, the total space complexity for merge sort is $n + \lg n + 1 = O(n)$ (linear factor is dominant over logarithmic factor in terms of asymptotic growth).
 
 # Quicksort
+
+## Overview 
+
+Quicksort is a comparison-based and in-place sorting algorithm developed by British computer scientist Tony Hoare in 1959. It has a worst-case running time of $\Theta(n^2)$ on an input size $n$. However, quicksort is the most widely used sorting algorithm in the real world because it significantly outperforms other algorithms on average. The expected running time of quicksort on the average case is $\Theta(n\lg n)$, and the constant factors hidden in the $\Theta(n\lg n)$ term are quite small. When implemented well, quicksort can be faster than merge sort and around two or three times faster than heapsort.
+
+## Working of quicksort algorithm
+
+Like merge sort, quicksort is a divide-and-conquer algorithm. However, the way quicksort applies the divide-and-conquer paradigm is a little different from merge sort. In merge sort, the divide step almost does not do anything, and all the real work happens in the combine step. In contrast, the divide step is the central part of quicksort.
+
+Here is how quicksort employs divide-and-conquer for sorting a subarray $A[p...r]$:
+
+- **Divide**: Partition the array $A[p...r]$ into two (can be empty) subarrays $A[p...q-1]$ and $A[q+1...r]$ such that all elements in $A[p...q-1]$ are less than or equal to $A[q]$, which must be also less than all elements in $A[q+1...r]$. The $A[q]$ element is often called pivot, and the computation of the index $q$ is key to the partitioning process.
+
+- **Conquer**: Recursively apply quicksort on two subarrays $A[p..q-1]$ and $A[q+1...r]$.
+
+- **Combine**: After the partitioning procedure, the pivot element is always at the correct position. Then, we recursively sort two subarrays that do not include the pivot. As a result, the entire array is already sorted, and there is no work to do at this step.
+
+Quicksort algorithm typically follows the below steps:
+
+**1. Select the pivot element:** There are many ways to select the pivot element: pick the first, the last, the median, or any random element of the array. This section shows how the algorithm works when we choose the last element as a pivot.
+
+**2. Partition (rearrange) the array:** Suppose we want to partition the array $A[p...r]$. Firstly, we select an element $A[r]$ as a pivot element and initialize variable $i$ with a value of $-1$. This variable will keep track of the index of the last element of the array whose all elements are less than or equal to the pivot. Then, we loop through the array $A[p...r]$ from $p$ to $r-1$ using a pointer $j$. If $A[j] \gt A[r]$, we do nothing and keep incrementing $j$. If $A[j] \le A[r]$, we increment $i$ by one and then swap $A[i]$ and $A[j]$. We continue to this process until $j$ reaches $r-1$. Remember that $A[i]$ is the last element in the subarray whose elements are less than or equal to the pivot. Therefore, to put the pivot into its correct position, we swap $A[i+1]$ and $A[r]$. Let $q = i + 1$, we now have a pivot $A[q]$ that is larger than or equal to all elements in $A[p...q-1]$ and strictly less than all elements in $A[q+1...r]$.
+
+**3. Recursively sort two subarrays:** Recursively call quicksort on $A[p...q-1]$ and then on $A[q+1...r]$.
+
+The running time of partitioning procedure on the subarray $A[p...r]$ is $\Theta(n)$, where $n = r - p + 1$.
+
+## Quicksort implementation
+
+```python
+def quick_sort(arr, l ,r):
+    if l < r:
+        pivot = partition(arr, l, r)
+        quick_sort(arr, l, pivot - 1)
+        quick_sort(arr, pivot + 1, r)
+
+
+def partition(arr, l, r):
+    pivot = arr[r]
+    i = l - 1
+    for j in range(l, r):
+        if arr[j] <= pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+    arr[i + 1], arr[r] = arr[r], arr[i + 1]
+    return i + 1
+```
+
+To sort the entire array $A$, we call ***quick_sort***$(A, 0, len(A) - 1)$ in the main program.
+
+## Performance of quicksort
 
 
 References
