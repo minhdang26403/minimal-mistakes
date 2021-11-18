@@ -80,7 +80,7 @@ def merge_sort(A, p, r):
         merge(A, p, q, r)
 ```
 
-Now, we have a complete merge sort program. To sort the array $A = [A[0], A[1], A[n-1]]$, we call **merge_sort$(A, 0, n-1)$**, where $n$ is the length of the array. The algorithm will recursively partition the initial array into two halves until the size of them is 1. Then in the merge procedure, the algorithm involves merging pairs of 1-item arrays to form sorted arrays of length 2, merging pairs of arrays of length 2 to form sorted arrays of length 4, and so forth, until two arrays of length $n/2$ are merged to form the sorted array of length $n$.
+Now, we have a complete merge sort program. To sort the array $A = [A[0], A[1], A[n-1]]$, we call **merge_sort$(A, 0, n-1)$**, where $n$ is the length of the array. The algorithm will recursively partition the initial array into two subarrays until the size of them is 1. Then in the merge procedure, the algorithm involves merging pairs of 1-item arrays to form sorted arrays of length 2, merging pairs of arrays of length 2 to form sorted arrays of length 4, and so forth, until two arrays of length $n/2$ are merged to form the sorted array of length $n$.
 
 ![mergeSort]({{ site.url }}{{ site.baseurl }}/assets/images/merge_sort/merge_sort.png)[^1]
 
@@ -175,36 +175,170 @@ Quicksort algorithm typically follows the below steps:
 
 **1. Select the pivot element:** There are many ways to select the pivot element: pick the first, the last, the median, or any random element of the array. This section shows how the algorithm works when we choose the last element as a pivot.
 
-**2. Partition (rearrange) the array:** Suppose we want to partition the array $A[p...r]$. Firstly, we select an element $A[r]$ as a pivot element and initialize variable $i$ with a value of $-1$. This variable will keep track of the index of the last element of the array whose all elements are less than or equal to the pivot. Then, we loop through the array $A[p...r]$ from $p$ to $r-1$ using a pointer $j$. If $A[j] \gt A[r]$, we do nothing and keep incrementing $j$. If $A[j] \le A[r]$, we increment $i$ by one and then swap $A[i]$ and $A[j]$. We continue to this process until $j$ reaches $r-1$. Remember that $A[i]$ is the last element in the subarray whose elements are less than or equal to the pivot. Therefore, to put the pivot into its correct position, we swap $A[i+1]$ and $A[r]$. Let $q = i + 1$, we now have a pivot $A[q]$ that is larger than or equal to all elements in $A[p...q-1]$ and strictly less than all elements in $A[q+1...r]$.
+**2. Partition (rearrange) the array:** Suppose we want to partition the array $A[p...r]$. Firstly, we select an element $A[r]$ as a pivot element and initialize variable $i$ with a value of $-1$. This variable will keep track of the index of the last element of the subarray whose all elements are less than or equal to the pivot. Then, we loop through the array $A[p...r]$ from $p$ to $r-1$ using a pointer $j$. If $A[j] \gt A[r]$, we do nothing and keep incrementing $j$. If $A[j] \le A[r]$, we increment $i$ by one and then swap $A[i]$ and $A[j]$. We continue to this process until $j$ reaches $r-1$. Remember that $A[i]$ is the last element in the subarray whose elements are less than or equal to the pivot. Therefore, to put the pivot into its correct position, we swap $A[i+1]$ and $A[r]$. Let $q = i + 1$, we now have a pivot $A[q]$ that is larger than or equal to all elements in $A[p...q-1]$ and strictly less than all elements in $A[q+1...r]$.
 
 **3. Recursively sort two subarrays:** Recursively call quicksort on $A[p...q-1]$ and then on $A[q+1...r]$.
 
-The running time of partitioning procedure on the subarray $A[p...r]$ is $\Theta(n)$, where $n = r - p + 1$.
+Because we loop through the subarray $A[p...r]$ once, the running time of partitioning procedure on this subarray is $\Theta(n)$, where $n = r - p + 1$.
 
 ## Quicksort implementation
 
 ```python
-def quick_sort(arr, l ,r):
-    if l < r:
-        pivot = partition(arr, l, r)
-        quick_sort(arr, l, pivot - 1)
-        quick_sort(arr, pivot + 1, r)
+def quick_sort(A, p ,r):
+    if p < r:
+        q = partition(A, p, r)
+        quick_sort(A, p, q - 1)
+        quick_sort(A, q + 1, r)
 
 
-def partition(arr, l, r):
-    pivot = arr[r]
-    i = l - 1
-    for j in range(l, r):
-        if arr[j] <= pivot:
+def partition(A, p, r):
+    pivot = A[r]
+    i = p - 1
+    for j in range(p, r):
+        if A[j] <= pivot:
             i += 1
-            arr[i], arr[j] = arr[j], arr[i]
-    arr[i + 1], arr[r] = arr[r], arr[i + 1]
+            A[i], A[j] = A[j], A[i]
+    A[i + 1], A[r] = A[r], A[i + 1]
     return i + 1
 ```
 
-To sort the entire array $A$, we call ***quick_sort***$(A, 0, len(A) - 1)$ in the main program.
+To sort the entire array $A$, we call **quick_sort**$(A, 0, len(A) - 1)$.
 
-## Performance of quicksort
+## Randomized quicksort
+
+As we mentioned before, the quicksort algorithm is more efficient than other sorting algorithms on most inputs. However, quicksort performs poorly when the pivot splits the array into extremely unbalanced subarrays (e.g., The size of $A[p...q-1]$ and $A[q+1...r]$ is $0$ and $n-1$, respectively). Therefore, to solve this problem, we can try to add randomization to the algorithm using a technique called **random sampling** with the hope of getting a good performance on all inputs.
+
+Specifically, instead of always choosing $A[r]$ as the pivot, we can randomly select an element from the subarray $A[p...r]$ as the pivot. Using the random sampling technique, we ensure that each element in the subarray has an equal chance to be the pivot. Doing this way, we can hope that the split of the input array will be well balanced on average. 
+
+## Randomized quicksort implementation
+
+```python
+import random
+
+def randomized_quick_sort(A, p ,r):
+    if p < r:
+        q = randomized_partition(A, p, r)
+        randomized_quick_sort(A, p, q - 1)
+        randomized_quick_sort(A, q + 1, r)
+
+
+def randomized_partition(A, p, r):
+    pivot = random.randint(p, r)
+    A[pivot], A[r] = A[r], A[pivot]
+    return partition(A, p, r)
+
+def partition(A, p, r):
+    pivot = A[r]
+    i = p - 1
+    for j in range(p, r):
+        if A[j] <= pivot:
+            i += 1
+            A[i], A[j] = A[j], A[i]
+    A[i + 1], A[r] = A[r], A[i + 1]
+    return i + 1
+```
+
+## Complexity analysis
+
+The running time of quicksort depends on whether the pivot partitions the array into balanced or unbalanced subarrays. If the partitioning is balanced, the algorithm runs asymptotically as fast as merge sort. However, if the partitioning is unbalanced, the asymptotic running time of quicksort can be as slow as that of insertion sort. In this section, we will investigate the performance of quicksort and the randomized version of it in all cases.
+
+### Best-case analysis
+
+The best case happens when the pivot splits the input array into two balanced halves, each with a size no more than $n/2$. In this case, the recurrence for the running time of quicksort is 
+
+$$T(n) = 2T(n/2) + \Theta(n)$$
+
+For the sake of simplicity, we can accept that two subproblems have the exact size of $n/2$, and this shall not affect the final result. This recurrence is the same as the recurrence we have solved for merge sort, and its solution is $T(n) = \Theta(n\lg n)$. Therefore, if the pivot partitions the array equally at each level of recursion, the time complexity of quicksort will be $\Theta(n\lg n)$.
+
+### Worst-case analysis
+
+Intuitively, we see that the worst case occurs when the partitioning procedure produces one subproblem with $n-1$ elements and one with $0$ elements. Let assume that this worst-case behavior happens in each partitioning routine. The running time of the partitioning is $cn$ for some constant c. The recursive call on the array of size $0$ checks the condition and returns, so this step costs constant time, and we can ignore it when solving the recurrence. The recurrence for the worst-case running time of quicksort is
+
+$$
+\begin{align}
+T(n) &= T(n-1) + T(0) + cn \\
+&= T(n-1) + cn \\
+&= T(n-2) + c(n-1) + cn \\
+& \;\;. \\
+& \;\;. \\
+& \;\;. \\
+&= c(n + n - 1 + n - 2 + \ldots + 1) \\
+&= \frac{n(n+1)}{2} \\
+&= \Theta(n^2) \\
+\end{align}
+$$
+
+The solution to the recurrence above is $T(n) = \Theta(n^2)$, which means that quicksort is not efficient than insertion in the worst case. The running time $\Theta(n^2)$ occurs when the input array is already sorted, while insertion sort has a linear running time.
+
+However, this intuitive result is based on the assumption that at each recursive level, the pivot splits the input array into two maximally unbalanced subarrays. We now will prove this assumption. Let $T(n)$ be the worst-case running time of quicksort on the input of size $n$. We have
+
+$$T(n) = \max_{0 \le q \lt n - 1}(T(q) + T(n - 1 - q)) + \Theta(n)$$
+
+$q$ ranges from $0$ to $n-1$ because the partition function can produce a subproblem of size $0$ up to $n-1$. Also, we guess that $T(n) \le cn^2$. Substituting this inequality into the recurrence above, we get
+
+$$
+\begin{align}
+T(n) &\le \max_{0 \le q \lt n - 1}(cq^2 + c(n - 1 - q)^2) + \Theta(n) \\
+&= \max_{0 \le q \lt n - 1}(q^2 + (n - 1 - q)^2)\cdot c + \Theta(n)
+\end{align}
+$$
+
+The problem here is to find the maximum of function $f(q) = q^2 + (n - 1 - q)^2$ on the interval $[0, n-1]$. Notice that 
+
+$$
+\begin{align}
+f'(q) &= 2q - 2(n - 1 - q) = 4q -2n + 2 \\
+f''(q) &= 4 
+\end{align}
+$$
+
+Because $f'\' (q) \gt 0, \forall q \in \mathbb{R}$, the graph of this function always concaves up. Therefore, the maximum of $f(q)$ on that interval must occur at either two endpoints $0$ or $n-1$. In this case, both $q=0$ and $q=n-1$ gives us the maximum $(n-1)^2$. Substituting back to our recurrence, we obtain
+
+$$
+\begin{align}
+T(n) &\le c(n-1)^2 + \Theta(n) \\
+&= cn^2 - c(2n-1) + \Theta(n) \\
+&\le cn^2
+\end{align}
+$$
+
+We can pick a large enough constant $c$ so that the $c(2n-1)$ and $\Theta(n)$ term cancel out. Hence, the solution for the recurrence is $T(n) = O(n^2)$. Using a similar method, we can prove that $T(n) = \Omega(n^2)$. Therefore, the worst-case running time of quicksort is $\Theta(n^2)$.
+
+### Average-case analysis
+
+The performance of quicksort in the average case is much closer to the best case than to the worst case, meaning that even when the partitioning seems quite unbalanced, quicksort still achieves $O(n\lg n)$ running time. The image below represents the size of subproblems at each level if the partitioning always produces a 9-to-1 split.
+
+![RecursionTree]({{ site.url }}{{ site.baseurl }}/assets/images/merge_sort/quicksort_tree.png)[^1]
+
+The maximum depth of the recursion tree is $\log_{10/9}n = \Theta(\lg n)$, and the cost at each level is at most $cn$. Thus, quicksort runs in $O(n \lg n)$ time with the split ratio of 9-to-1 at each recursive level. In fact, the time complexity of quicksort is $O(n \lg n)$ when there is a proportional split at each level.
+
+On average, it is extremely unlikely for the partitioning to be always maximally unbalanced on every recursive call. Therefore, we can intuitively say that the expected running time of quicksort is $O(n \lg n)$.
+
+To do a formal analysis on the performance of quicksort, we will analyze the running time of the partitioning function because all the work of quicksort happens in the partitioning step. Each time we call this function, it selects a pivot, and this element is never included in any future procedure. Hence, the partitioning function will run at most $n$ times over the entire execution of the quicksort algorithm. The cost of the partition function depends on the amount of work done in the **for** loop when we compare the pivot with other elements. Thus, to calculate the total time spent on the partitioning step of the quicksort algorithm, we can count the total number of comparisons in the **for** loop. Also, we assume that all elements in the input array are distinct.
+
+Let $X$ be the total number of comparisons done in the partitioning procedure of the quicksort algorithm. As we explained before, the running time of quicksort is $O(n + X)$. To make our analysis easier, we rename the elements of the array $A$ as $z_1, z_2,\ldots,z_n$, with $z_i$ being the $i$th smallest element and define the set $Z_ij = {z_i, z_i+1, \ldots, z_j}$ to be the set of elements between $z_i$ and $z_j$ (inclusive). Also, we define $X_{ij}$ as an event that $z_i$ is compared to $z_j$. Each pair of elements is compared at most once because elements are compared only to the pivot element, and the pivot is never included in any future recursive calls. Therefore, the total number of comparisons performed by the quicksort algorithm is
+
+$$X = \sum_{i=1}^{n-1}\sum_{j=i+1}^{n}X_{ij}$$
+
+Taking the expectation of both sides, we have
+
+$$E(X) = E(\sum_{i=1}^{n-1}\sum_{j=i+1}^{n}X_{ij})$$
+
+Because expectation has the linearity property, the above expression is equivalent to 
+
+$$
+\begin{align}
+E(X) &= \sum_{i=1}^{n-1}\sum_{j=i+1}^{n}E(X_{ij}) \\
+E(X) &= \sum_{i=1}^{n-1}\sum_{j=i+1}^{n}P(z_i \is compared to z_j)
+\end{align}
+$$
+
+
+If there is a pivot $x$ such that $z_i \lt x \lt z_j$, $z_i$ and $z_j$ cannot be compared at any time during the quicksort algorithm because the pivot will put $z_i$ and $z_j$ into two separate subarrays. If $z_i$ is selected as a pivot before any other items in $Z_ij$, it will be compared to all other elements in $Z_ij$ (including $z_j$), except for itself. Hence, $z_i$ and $z_j$ are compared if and only if the first element to be chosen as a pivot from $Z_ij$ is either $z_i$ or $z_j$.
+
+
+
+
 
 
 References
