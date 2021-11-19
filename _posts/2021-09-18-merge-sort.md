@@ -329,16 +329,67 @@ Because expectation has the linearity property, the above expression is equivale
 $$
 \begin{align}
 E(X) &= \sum_{i=1}^{n-1}\sum_{j=i+1}^{n}E(X_{ij}) \\
-E(X) &= \sum_{i=1}^{n-1}\sum_{j=i+1}^{n}P(z_i \is compared to z_j)
+E(X) &= \sum_{i=1}^{n-1}\sum_{j=i+1}^{n}P(\text{$z_i$ is compared to $z_j$}) \tag{1}
 \end{align}
 $$
 
 
-If there is a pivot $x$ such that $z_i \lt x \lt z_j$, $z_i$ and $z_j$ cannot be compared at any time during the quicksort algorithm because the pivot will put $z_i$ and $z_j$ into two separate subarrays. If $z_i$ is selected as a pivot before any other items in $Z_ij$, it will be compared to all other elements in $Z_ij$ (including $z_j$), except for itself. Hence, $z_i$ and $z_j$ are compared if and only if the first element to be chosen as a pivot from $Z_ij$ is either $z_i$ or $z_j$.
+If there is a pivot $x$ such that $z_i \lt x \lt z_j$, $z_i$ and $z_j$ cannot be compared at any time during the quicksort algorithm because the pivot will put $z_i$ and $z_j$ into two separate subarrays. If $z_i$ is selected as a pivot before any other items in $Z_{ij}$, it will be compared to all other elements in $Z_{ij}$ (including $z_j$), except for itself. Hence, $z_i$ and $z_j$ are compared if and only if the first element to be chosen as a pivot from $Z_{ij}$ is either $z_i$ or $z_j$.
 
+Before any element from $Z_{ij}$ is chosen as a pivot, the whole set $Z_{ij}$ is in the same partition. Therefore, each element has the same probability of being first chosen as a pivot. Because the set $Z_{ij}$ has $j - i + 1$ elements, the probability an element is the first one from the set $Z_{ij}$ to be chosen as a pivot is 1/$j - i + 1$. Also, because the events that $z_i$ is the first pivot from $Z_{ij}$ and that $z_j$ is the first pivot from $Z_{ij}$ are mutually exclusive, we have
 
+$$
+\begin{align}
+P(\text{$z_i$ is compared to $z_j$}) &= P(\text{$z_i$ or $z_j$ is first chosen as a pivot}) \\
+&= P(\text{$z_i$ is first chosen as a pivot}) \\
+&+ P(\text{$z_j$ is first chosen as a pivot}) \\ 
+&= \frac{1}{j - i + 1} + \frac{1}{j - i + 1} \\
+&= \frac{2}{j - i + 1} \tag{2}
+\end{align}
+$$
 
+Substituting the equation $(2)$ into the equation $(1)$, we obtain 
 
+$$
+\begin{align}
+E(X) &= \sum_{i=1}^{n-1}\sum_{j=i+1}^{n}\frac{2}{j - i + 1} \\
+&= \sum_{i=1}^{n-1}\sum_{k=1}^{n}\frac{2}{k + 1} \\
+&\lt \sum_{i=1}^{n-1}\sum_{k=1}^{n}\frac{2}{k} \tag{3} \\
+\end{align}
+$$
+
+Notice that we can calculate $\sum_{k=1}^{n}\frac{2}{k}$ as a Riemann Sum.
+
+![RiemannSum]({{ site.url }}{{ site.baseurl }}/assets/images/merge_sort/riemann_sum.png)
+
+Based on the graph, we have 
+
+$$
+\begin{align}
+\sum_{k=2}^{n}\frac{1}{k} &\le \int_{1}^{n}\frac{1}{x}\mathrm{d}x \\
+&= \ln x \Big|^n_1 \\ 
+&= \ln n \\
+\Rightarrow \sum_{k=1}^{n}\frac{2}{k} &\le 2(\ln n + 1) \tag{4} \\
+\end{align}
+$$
+
+Combining $(3)$ and $(4)$, we obtain
+
+$$
+\begin{align}
+E(X) &\lt \sum_{i=1}^{n-1}2(\ln n + 1) \\
+&= 2(n - 1)(\ln n + 1) \\
+&= O(n \lg n) \\
+\end{align}
+$$
+
+Hence, the expected running time of quicksort is $O(n \lg n)$ when all elements of an input array are distinct.
+
+# Conclusion
+
+In this post, we have covered two divide-and-conquer sorting algorithms having an expected running time of $O(n \lg n)$. In future posts, we will introduce other sorting algorithms that still run in $O(n \lg n)$ time and explain why comparison-based sorting algorithms cannot run faster than $O(n \lg n)$.
+
+The content of this post is based on the course *6.006 Introduction to Algorithms*, Fall 2011 and the book *Introduction to Algorithms* (CLRS).
 
 
 References
