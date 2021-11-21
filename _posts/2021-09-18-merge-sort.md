@@ -387,7 +387,7 @@ Hence, the expected running time of quicksort is $O(n \lg n)$ when all elements 
 
 # Conclusion
 
-In this post, we have covered two divide-and-conquer sorting algorithms having an expected running time of $O(n \lg n)$. In future posts, we will introduce other sorting algorithms that still run in $O(n \lg n)$ time and explain why comparison-based sorting algorithms cannot run faster than $O(n \lg n)$.
+In this post, we have covered two divide-and-conquer sorting algorithms that have an expected running time of $O(n \lg n)$. In future posts, we will introduce other sorting algorithms that use new data structures and find a lower bound for the running time of comparison-based sorting algorithms.
 
 The content of this post is based on the course *6.006 Introduction to Algorithms*, Fall 2011 and the book *Introduction to Algorithms* (CLRS).
 
