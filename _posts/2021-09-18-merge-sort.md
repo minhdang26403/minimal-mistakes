@@ -394,6 +394,6 @@ The content of this post is based on the course *6.006 Introduction to Algorithm
 
 References
 ---
-[^1]: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein: Introduction to Algorithms, 3rd Edition. MIT Press 2009, ISBN 978-0-262-03384-8, pp. 30-37.
+[^1]: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein: Introduction to Algorithms, 3rd Edition. MIT Press 2009, ISBN 978-0-262-03384-8, pp. 30-37 & pp. 170-184.
 [^2]: Thomas Cormen, Devin Balkcom, Khan Academy computing curriculum team. Algorithms, Merge sort.  CC-BY-NC-SA License
 [^3]: Srini Devadas, S. 6.006 Introduction to Algorithms: Lecture 3, Fall 2011.
