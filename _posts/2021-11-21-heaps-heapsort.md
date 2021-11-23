@@ -26,7 +26,7 @@ A binary heap is often constructed as a nearly complete binary tree from an arra
 |:---:|
 |A heap built from an array [^1]|
 
-An array $A$ representing a heap is an object with two attributes: $A.length$, which returns the number of elements in the array $A$, and $A.heap\mathrm{-}size$, which gives the number of elements of the heap stored in the array $A$. Elements in the array $A$ are not always in the heap, so $0 \le A.heap\mathrm{-}size \le A.length$. If we use the one-based indices, the root of the tree (the heap) is $A[1]$. Also, knowing the index $i$ of a node, we can easily compute the indices of its parent, left child, and right child:
+An array $A$ representing a heap is an object with two attributes: $A.length$, which returns the number of elements in the array $A$, and $A.heap\mathrm{-}size$, which gives the number of elements of the heap stored in the array $A$. Elements in the array $A$ are not always in the heap, so $0 \le A.heap\mathrm{-}size \le A.length$. If we use one-based indexing, the root of the tree (the heap) is $A[1]$. Also, knowing the index $i$ of a node, we can easily compute the indices of its parent, left child, and right child:
 
 $$
 \begin{align}
@@ -52,7 +52,7 @@ Based on this property, the smallest element of a min-heap is at the root of the
 
 In this post, we will use max-heaps for the heapsort algorithm. Viewing a heap as a tree, we define the ***height*** of a node in a heap to be the number of edges on the longest simple path from the node to a leaf and the ***height*** of the heap to be the height of its root. We can also define the ***depth*** of a node as the length of the path from the heap root to that node. Hence, the ***height*** of a heap is equal to its ***depth***. We can see that the number of nodes at depth $h$ is roughly $2^h$, which is trivially true for the root node because the depth of the root is $0$ and $2^0 = 1$. Thus, the total number of nodes in a complete binary tree is around $\sum_{i=0}^{h} 2^i = 2^{h+1} -1 $. 
 
-Visualizing a heap as a nearly complete binary tree, we see that the number of nodes of the heap is between the number of nodes of a nearly complete binary tree depth $h-1$ with one additional node at the last level and the number of nodes of a perfect binary tree depth $h$. In other words,
+Visualizing a heap as a nearly complete binary tree, we see that the number of nodes of the heap is between the number of nodes of a nearly complete binary tree depth $h-1$ with one additional node at the last level and the number of nodes of a perfect binary tree depth $h$. In other words, given $n$ is the number of nodes of a heap, we have
 
 $$
 \begin{align}
@@ -66,11 +66,11 @@ We can write the above result as $ h = \lg n + \alpha$, where $0 \le \alpha \lt 
 
 $$h = \lfloor\lg n\rfloor = \Theta(\lg n)$$
 
-Hence, the height of a heap built from an input array size $n$ is $\Theta(\lg n)$. This observation is essential for us to analyze the running time of operations on the heap.
+Hence, the height of a heap built from an input array size $n$ is $\Theta(\lg n)$. This observation is essential for analyzing the running time of operations on the heap.
 
 # Maintaining the heap property
 
-The heap we build from an input array may not satisfy the max-heap property. Therefore, to maintain this property, we will use the $\text{max_heapify(A, heap_size, i)}$ function. The input of this function is an array $A$, the size of a heap stored in the array $A$, and the index $i$ of a node that violates the max-heap property. The $\text{max_heapify}$ procedure works by comparing the value of the node at index $i$ with its left and right child. If the value of a node is smaller than that of its children, we will swap that node with its left or right child, depending on which one is bigger. The key assumption for this process is that binary trees rooted at $\text{leftChild(i)}$ and $\text{rightChild(i)}$ are max-heaps. Below is the Python implementation of $\text{max_heapify}$. The way we calculate the indices of left and right child of a node is a little different from what we have discussed because Python uses zero-based indexing.
+The heap we build from an input array may not satisfy the max-heap property. Therefore, to maintain this property, we will use the $\text{max_heapify(A, heap_size, i)}$ function. The input of this function is an array $A$, the size of a heap stored in the array $A$, and the index $i$ of a node that violates the max-heap property. The $\text{max_heapify}$ procedure works by comparing the value of the node at index $i$ with its left and right child. If the value of a node is smaller than that of its children, we will swap that node with its left or right child, depending on which one is bigger. The key assumption for this process is that binary trees rooted at $\text{leftChild(i)}$ and $\text{rightChild(i)}$ are max-heaps. Below is the Python implementation of $\text{max_heapify}$. The way we calculate the indices of left and right child of a node is a little different from what we have discussed before because Python uses zero-based indexing.
 
 ```python
 def max_heapify(A, heap_size, i):
@@ -88,7 +88,7 @@ def max_heapify(A, heap_size, i):
 
 In the code above, we first store the index of a node that violates the max-heap property in $i$ and calculate the indices of its left and right child. Then, we use conditional checks to determine the largest element out of $A[i]$, $A[\mathrm{left}]$, and $A[\mathrm{right}]$. If $\mathrm{largest} = i$, meaning that the subtree rooted in the node $i$ already satisfies the max-heap property, we do not need to make any changes. Otherwise, we swap $A[\mathrm{largest}]$ with $A[i]$, making the node $i$ and its children follow the max-heap property. However, the node indexed by *largest* now has the value $A[i]$, which may make the subtree rooted at *largest* violate the max-heap property. Hence, we call $\text{max_heapify(A, heap_size, largest)}$ recursively on that subtree.
 
-In the $\text{max_heapify}$ procedure, comparing and swapping elements cost constant time. However, we may need to trigger many recursive calls on $\text{max_heapify}$ in case a child of a node, after being swapped, also violates the max-heap property. The worst case occurs when $\text{max_heapify}$ is called until it reaches the farthest leaf nodes. Remember that we visualize a heap as a nearly complete binary tree, in which all levels are completely filled except the lowest level. In addition, in this type of tree, the height of a left subtree and a right subtree differs at most one. Therefore, when the worst case occurs, the last level of the tree is exactly half full. In other words, all the nodes at the bottom are located only in the left subtree because we fill the tree from left to right. The job here is to find an upper bound for the size of the left subtree.
+In the $\text{max_heapify}$ procedure, comparing and swapping elements cost constant time. However, we may need to trigger many recursive calls on $\text{max_heapify}$ in case a child of a node, after being swapped, also violates the max-heap property. The worst case occurs when $\text{max_heapify}$ is called until it reaches the farthest leaf nodes. Remember that we visualize a heap as a nearly complete binary tree, in which all levels are completely filled except the lowest level. In addition, in this type of tree, the height of a left subtree and a right subtree differs at most one. Therefore, when the worst case occurs, the last level of the tree should be exactly half full. In other words, all the nodes at the bottom are located only in the left subtree because we fill the tree from left to right. The job here is to find an upper bound for the size of the left subtree.
 
 Assume that the height of the right subtree is $h$, so the height of the left subtree is $h+1$. As we have proved before, the number of nodes in the right and left subtree:
 
@@ -137,11 +137,11 @@ The key subroutine in the heapsort algorithm is building a max heap from an unor
 
 >**Lemma 1**: Given an n-element heap built from an array $A$, the elements in the subarray $A[\lfloor n/2\rfloor + 1...n]$ are all leaves of the heap.
 
-**Proof**. We will prove this property by contradiction. Suppose that there is a node with index $i$ in the subarray $A[\lfloor n/2\rfloor + 1...n]$ is not a leaf, meaning that it at least has a left child. Then the index of its left child is <center>$ 2i \ge 2(\left\lfloor\frac{n}{2}\right\rfloor + 1) \gt n $</center> 
+**Proof**. We will prove this property by contradiction. Suppose that there exists a node with index $i$ in the subarray $A[\lfloor n/2\rfloor + 1...n]$ that is not a leaf, meaning that it at least has a left child. Then the index of its left child is <center>$ 2i \ge 2(\left\lfloor\frac{n}{2}\right\rfloor + 1) \gt n $</center> 
 
 Hence, the index of left child of the node $i$ is larger than the maximum array length, meaning there is no such node in the subarray $A[\lfloor n/2\rfloor + 1...n]$. $\square$
 
-Knowing the above property, we can start the $\text{build-max-heap}$ procedure from the node $\lfloor n/2\rfloor$ up to node indexed at $1$. On each iteration, we run $\text{max-heapify}$ on each node to correct the max-heap property. Below is the Python implementation of $\text{build-max-heap}$. 
+Knowing the above property, we can start the $\text{build-max-heap}$ procedure from the node $\lfloor n/2\rfloor$ up to the node indexed at $1$. On each iteration, we run $\text{max-heapify}$ on each node to correct the max-heap property. Below is the Python implementation of $\text{build-max-heap}$. 
 
 ```python
 def build_max_heap(A):
@@ -166,7 +166,7 @@ This lemma will help us find a tighter bound for the running time of $\text{buil
 
 $$\sum_{h=0}^{\lfloor\lg n\rfloor}\left\lceil \frac{n}{2^{h+1}} \right\rceil\cdot O(h) = O\left(n \cdot \sum_{h=0}^{\lfloor \lg n\rfloor} \frac{h}{2^h}\right)$$
 
-Notice that infinite sum of $x$ with $\|x\| \lt 1$
+Notice that infinite geometric series of $x$ with $\|x\| \lt 1$ is
 
 $$\sum_{k=0}^{\infty}x^k = \frac{1}{1-x}$$
 
@@ -186,7 +186,7 @@ This bound is much better the previous bound we get from a simple analysis. Henc
 
 # The heapsort algorithm
 
-The heapsort algorithm starts by building a max-heap from the input array $A[1...n]$, where $n = A.length$. Since the maximum element of the array is stored at the root $A[1]$, we can put it into the correct position by swapping it with $A[n]$. Since $A[1]$ is now at the correct position, we remove it from the heap by decrementing its size. We observe that the children of the root are still max-heaps, but the new root element may violate the max-heap property. Hence, we need to call $\text{max-heapify(A, heap_size, i)}$. The heapsort algorithm repeats this process until the size of the heap is $1$.
+The heapsort algorithm starts by building a max-heap from the input array $A[1...n]$, where $n = A.length$. Since the maximum element of the array is stored at the root $A[1]$, we can put it into the correct position by swapping it with $A[n]$. Since $A[1]$ is now at the correct position, we remove it from the heap by decrementing its size. We observe that the children of the root are still max-heaps, but the new root element may violate the max-heap property. Hence, we need to call $\text{max-heapify(A, heap_size, 1)}$. The heapsort algorithm repeats this process until the size of the heap is $1$.
 
 ## Python implementation of heapsort
 
@@ -213,7 +213,7 @@ def build_max_heap(A):
 def heap_sort(A):
     build_max_heap(A)
     n = len(A)
-    for i in range(n - 1, 1, -1):
+    for i in range(n - 1, 0, -1):
         A[i], A[0] = A[0], A[i]
         max_heapify(A, i, 0)
 ```
@@ -222,7 +222,7 @@ The $\text{build-max-heap}$ costs $O(n)$ time and each of the $n-1$ calls to $\t
 
 # Conclusion
 
-Heapsort is a comparison-based sorting algorithm that can run in $O(n \lg n)$ time. It is generally preferred over merge sort because heapsort is an in-place sorting algorithm. In addition, the heap data structure used in heapsort has many useful applications. In the next post, we will discuss other data structures and provide a lower bound for the running time of sorting algorithms.
+Heapsort is a comparison-based sorting algorithm that can run in $O(n \lg n)$ time. It is generally preferred over merge sort because heapsort is an in-place sorting algorithm. In addition, the heap data structure used in heapsort has many useful applications. In next posts, we will discuss other data structures and provide a lower bound for the running time of sorting algorithms.
 
 References
 ---
