@@ -14,7 +14,7 @@ In previous posts, we have seen how quicksort and mergesort work based on the di
 
 ## Overview
 
-We will start by briefly discussing the properties of heaps and basic operations on this data structure. Then, we explore the main procedures of the heapsort algorithm. Lastly, we will look at the application of heaps, which is to implement a priority queue.
+We will start by briefly discussing the properties of heaps and basic operations on this data structure. Then, we explore the main procedures of the heapsort algorithm. Following that, we analyze the time complexity of these procedures and the heapsort algorithm. In addition, we will prove the properties of binary trees (heaps), which are essential to computing the running time of basic operations on the heap data structure.
 
 # Heaps
 
@@ -219,6 +219,10 @@ def heap_sort(A):
 ```
 
 The $\text{build-max-heap}$ costs $O(n)$ time and each of the $n-1$ calls to $\text{max-heapify}$ costs $O(\lg n)$ time. Hence, the total running time of heapsort is $O(n + (n-1)\lg n) = O(n \lg n)$.
+
+# Conclusion
+
+Heapsort is a comparison-based sorting algorithm that can run in $O(n \lg n)$ time. It is generally preferred over merge sort because heapsort is an in-place sorting algorithm. In addition, the heap data structure used in heapsort has many useful applications. In the next post, we will discuss other data structures and provide a lower bound for the running time of sorting algorithms.
 
 References
 ---
