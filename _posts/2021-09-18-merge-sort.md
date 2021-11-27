@@ -16,7 +16,7 @@ The two sorting algorithms we have seen so far, bubble sort and insertion sort, 
 Many useful algorithms employ a common paradigm based on recursion. This paradigm, divide-and-conquer, breaks a problem into several subproblems that are similar to the original problem but smaller in size, recursively solves the subproblems, and finally combine the solutions to the subproblems to create a solution to the original problem. 
 
 The divide-and-conquer paradigm involves three steps: 
-- **Divide** the problem into a number of subproblems that are smaller of instances of the same problem.
+- **Divide** the problem into a number of subproblems that are smaller instances of the same problem.
 - **Conquer** the subproblems by solving them recursively. If they are small enough, solve the subproblems as base cases.
 - **Combine** the solutions to the subproblems into the solution for the original problem.
 
@@ -35,7 +35,7 @@ The **merge sort** employs the divide-and-conquer paradigm. Specifically, it ope
 
 The algorithm reaches the base case when the subarray has the size of 1, in which there is no work needed to be done because every array of size 1 is already sorted. 
 
-The key subroutine of the merge sort algorithm is merging two sorted arrays into a sorted one. We merge by calling an auxiliary function $merge(A,p,q,r)$, where $A$ is an array and $p,q,$ and $r$ are indices of the array such that $p \le q \lt r$. Assuming that the subarrays $A[p..q]$ and $A[q+1..r]$ are sorted, the $merge(A,p,q,r)$ function merges them into a single subarray that replaces the current subarray $A[p..r]$.
+The key subroutine of the merge sort algorithm is merging two sorted arrays into a sorted one. We merge by calling an auxiliary function $\text{merge}(A,p,q,r)$, where $A$ is an array and $p,q,$ and $r$ are indices of the array such that $p \le q \lt r$. Assuming that the subarrays $A[p..q]$ and $A[q+1..r]$ are sorted, the $\text{merge}(A,p,q,r)$ function merges them into a single subarray that replaces the current subarray $A[p..r]$.
 
 The merging process works as follows: 
 - First, we have two pointers (indicated by yellow circles) pointing to the smallest elements of two subarrays, which are already sorted. 
@@ -149,7 +149,7 @@ In addition, the space complexity for the merge sort algorithm is $O(n)$. Becaus
 
 Because the depth of the recursion tree is at most $\lg n + 1$, the maximum height of the "call stack" is $\lg n + 1$.
 
-Moreover, we need to create two subarrays $L$ and $R$ at each level. However, the computer memory will clear those arrays after the function ends. Therefore, we only need at most $O(n)$ auxiliary space when merging two arrays, each with the size of $n/2$, into the final array.
+Moreover, we need to create two subarrays $L$ and $R$ at each level. However, the computer memory will clear those arrays after the function ends. Therefore, we only need at most $O(n)$ auxiliary space when merging two subarrays, each with the size of $n/2$, into the final array.
 
 Hence, the total space complexity for merge sort is $n + \lg n + 1 = O(n)$ (linear factor is dominant over logarithmic factor in terms of asymptotic growth).
 
@@ -252,7 +252,7 @@ For the sake of simplicity, we can accept that two subproblems have the exact si
 
 ### Worst-case analysis
 
-Intuitively, we see that the worst case occurs when the partitioning procedure produces one subproblem with $n-1$ elements and one with $0$ elements. Let assume that this worst-case behavior happens in each partitioning routine. The running time of the partitioning is $cn$ for some constant c. The recursive call on the array of size $0$ checks the condition and returns, so this step costs constant time, and we can ignore it when solving the recurrence. The recurrence for the worst-case running time of quicksort is
+Intuitively, we see that the worst case occurs when the partitioning procedure produces one subproblem with $n-1$ elements and one with $0$ elements. Let assume that this worst-case behavior happens in every partitioning routine. The running time of the partitioning is $cn$ for some constant c. The recursive call on the array of size $0$ checks the condition and returns, so this step costs constant time, and we can ignore it when solving the recurrence. The recurrence for the worst-case running time of quicksort is
 
 $$
 \begin{align}
@@ -316,7 +316,7 @@ On average, it is extremely unlikely for the partitioning to be always maximally
 
 To do a formal analysis on the performance of quicksort, we will analyze the running time of the partitioning function because all the work of quicksort happens in the partitioning step. Each time we call this function, it selects a pivot, and this element is never included in any future procedure. Hence, the partitioning function will run at most $n$ times over the entire execution of the quicksort algorithm. The cost of the partition function depends on the amount of work done in the **for** loop when we compare the pivot with other elements. Thus, to calculate the total time spent on the partitioning step of the quicksort algorithm, we can count the total number of comparisons in the **for** loop. Also, we assume that all elements in the input array are distinct.
 
-Let $X$ be the total number of comparisons done in the partitioning procedure of the quicksort algorithm. As we explained before, the running time of quicksort is $O(n + X)$. To make our analysis easier, we rename the elements of the array $A$ as $z_1, z_2,\ldots,z_n$, with $z_i$ being the $i$th smallest element and define the set $Z_{ij} = {z_i, z_i+1, \ldots, z_j}$ to be the set of elements between $z_i$ and $z_j$ (inclusive). Also, we define $X_{ij}$ as an event that $z_i$ is compared to $z_j$. Each pair of elements is compared at most once because elements are compared only to the pivot element, and the pivot is never included in any future recursive calls. Therefore, the total number of comparisons performed by the quicksort algorithm is
+Let $X$ be the total number of comparisons done in the partitioning procedure of the quicksort algorithm. As we explained before, the running time of quicksort is $O(n + X)$. To make our analysis easier, we rename the elements of the array $A$ as $z_1, z_2,\ldots,z_n$, with $z_i$ being the $i$th smallest element and define the set $Z_{ij} = {z_i, z_{i+1}, \ldots, z_j}$ to be the set of elements between $z_i$ and $z_j$ (inclusive). Also, we define $X_{ij}$ as an event that $z_i$ is compared to $z_j$. Each pair of elements is compared at most once because elements are compared only to the pivot element, and the pivot is never included in any future recursive calls. Therefore, the total number of comparisons performed by the quicksort algorithm is
 
 $$X = \sum_{i=1}^{n-1}\sum_{j=i+1}^{n}X_{ij}$$
 
@@ -336,7 +336,7 @@ $$
 
 If there is a pivot $x$ such that $z_i \lt x \lt z_j$, $z_i$ and $z_j$ cannot be compared at any time during the quicksort algorithm because the pivot will put $z_i$ and $z_j$ into two separate subarrays. If $z_i$ is selected as a pivot before any other items in $Z_{ij}$, it will be compared to all other elements in $Z_{ij}$ (including $z_j$), except for itself. Hence, $z_i$ and $z_j$ are compared if and only if the first element to be chosen as a pivot from $Z_{ij}$ is either $z_i$ or $z_j$.
 
-Before any element from $Z_{ij}$ is chosen as a pivot, the whole set $Z_{ij}$ is in the same partition. Therefore, each element has the same probability of being first chosen as a pivot. Because the set $Z_{ij}$ has $j - i + 1$ elements, the probability an element is the first one from the set $Z_{ij}$ to be chosen as a pivot is 1/$j - i + 1$. Also, because the events that $z_i$ is the first pivot from $Z_{ij}$ and that $z_j$ is the first pivot from $Z_{ij}$ are mutually exclusive, we have
+Before any element from $Z_{ij}$ is chosen as a pivot, the whole set $Z_{ij}$ is in the same partition. Therefore, each element has the same probability of being first chosen as a pivot. Because the set $Z_{ij}$ has $j - i + 1$ elements, the probability an element is the first one from the set $Z_{ij}$ to be chosen as a pivot is $1/(j - i + 1)$. Also, because the events that $z_i$ is the first pivot from $Z_{ij}$ and that $z_j$ is the first pivot from $Z_{ij}$ are mutually exclusive, we have
 
 $$
 \begin{align}

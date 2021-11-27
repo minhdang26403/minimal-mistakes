@@ -185,7 +185,7 @@ $$
 
 
 In addition to the size of input, the algorithm's running time may depend on which input of that size is given. 
-- First, we consider the best case, which is the array is already sorted. For each $j=2,3,...,n$, $A[i] \le key$  with $i = j-1$. The inner loop only checks condition but doesn't run the loop body. Therefore, $t_j = 1$ for $j=2,3,...,n$, and the best-case running time is
+- Firstly, we consider the best case, which is the array is already sorted. This means that for each $j=2,3,...,n$, $A[i] \le key$  with $i = j-1$. The inner loop only checks condition but doesn't run the loop body. Therefore, $t_j = 1$ for $j=2,3,...,n$, and the best-case running time is
 
 $$
 T(n) = c_1n + c_2(n-1) + c_3(n-1) + c_4\sum_{j=2}^n 1 + c_7(n-1) \;\;\;\;\;\;\\
@@ -219,7 +219,7 @@ Insertion sort is an in-place sorting algorithm. Thus, its space complexity is $
 
 # Conclusion
 
-In this post, we covered two simple but inefficient sorting algorithms. Due to their inefficiency, these two algorithms are not used widely in practice. Later posts will cover more advanced algorithms which have better asymptotic running times.  
+In this post, we covered two simple but inefficient sorting algorithms. Due to their inefficiency, these two algorithms are not used widely in practice. Later posts will cover more advanced sorting algorithms which have better asymptotic running times.  
 
 References
 ---
