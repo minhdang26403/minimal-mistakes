@@ -2,8 +2,9 @@
 
 title: "Projects"
 permalink: /project/
-layout: posts
-header: 
-  image: /assets/images/cs.jpg
- 
+layout: single
+
 ---
+
+
+Coming soon
