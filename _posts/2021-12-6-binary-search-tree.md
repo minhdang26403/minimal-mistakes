@@ -46,7 +46,94 @@ We can try solving this problem with our current known data structures:
 
 - **Dictionary or Python Set:** Inserting takes constant time, but the $k$ minutes check takes $\Omega(n)$ time.
 
-Our current known data structures can check the constraint fast but insert slow, or vice-versa. Therefore, we need to devise a new data structure that supports fast checking and insertion.
+Our current known data structures can check the constraint fast but insert slow, or vice-versa. Therefore, we need to devise a new data structure that supports fast check and insertion.
+
+# Binary Search Trees (BST)
+
+## Definition
+
+A **binary search tree**, also called an **ordered** or **sorted binary tree**, is a rooted binary tree. We can represent a binary search tree by a linked data structure where each node is an object. In addition to a *key* and satellite data, each node contains attributes *left*, *right*, and *parent* that point to the nodes corresponding to its left child, its right child, and its parent, respectively. If a child or the parent is missing, the respective attribute contains value $\text{None}$. The root node is the only node in the tree whose parent is $\text{None}$.
+
+In a binary search tree, the key of each node must satisfy the ***binary-search-tree property***:
+
+Let $x$ be a node in a binary search tree. For every node $l$ in the left subtree of $x$, then $l.key \le x.key$. For every node $r$ in the right subtree of $x$, then $r.key \ge x.key$.
+
+|![Binary Search Tree Example]({{ site.url }}{{ site.baseurl }}/assets/images/bst/bst.png)|
+|:---:|
+|An example of binary search trees|
+
+As we can see above, the root of our binary search tree has a key of $51$. All the nodes in the left subtree have keys no larger than $51$, and all the nodes in the right subtree have keys no smaller than $51$.
+
+The binary-search-tree property allows us to print out all the keys of a binary search tree in sorted order by using an algorithm called ***inorder traversal***. The algorithm has this name because it prints the root of a subtree between printing the values in its left subtree and printing those in its right subtree. Similarly, a ***preorder traversal*** prints the root before the values in either subtree, and a ***postorder traversal*** prints the root after the values in both subtrees. Below is the Python implementation of inorder traversal algorithm. To use this procedure on a binary search tree $T$, we call $\text{inorder_traversal}(T.root)$.
+
+```python
+def inorder_traversal(x):
+    if x is not None:
+        inorder_traversal(x.left)
+        print(x.key)
+        inorder_traversal(x.right)
+```
+
+This algorithm goes through all nodes in a binary search tree, so intuitively it takes $\Theta(n)$ time to traverse a binary search tree with $n$ nodes.
+
+**Proof**. Let $T(n)$ be the time taken by $\text{inorder_traversal}$ when it is called on the root of a $n$-node subtree. Because $\text{inorder_traversal}$ visits all $n$ nodes of the subtree, we have $T(n) = \Omega(n)$. The remaining part of our proof is to show that $T(n) = O(n)$.
+
+If a subtree is empty, the algorithm only needs to do the conditional check `x is not None`, which takes constant time. Hence, $T(0) = c$ for some constant $c \gt 0$.
+
+For $n \gt 0$, suppose that $\text{inorder_traversal}$ is called on a node $x$ whose left subtree has $k$ nodes and right subtree has $n - k - 1$ nodes. The running time of $\text{inorder_traversal}(x)$ is bounded by $ T(n) \le T(k) + T(n-k-1) + d$, where $d$ is a positive constant that reflects an upper bound on the running time of the body of $\text{inorder_traversal}(x)$, but including the time complexity of recursive calls inside the body.
+
+We will the substitution method to show that $T(n) = O(n)$ by proving that $T(n) \le (c+d)n + c$.
+- For $n=0$, we have $(c+d)\cdot 0 + c = c = T(0)$
+- For $n \gt 0$, we have
+
+$$
+\begin{align}
+T(n) &\le T(k) + T(n-k-1) + d \\
+&\le (c+d)k + c + (c+d)(n-k-1) + c + d \\
+&= c + (c+d)n - (c+d) + c + d \\
+&= (c+d)n + c
+\end{align}
+$$
+
+Hence, we have $T(n) = \Theta(n)$, meaning that we can go through all the nodes of a binary search tree in linear time. This running time is the same as that of the data structures mentioned at the beginning of the post, which is good news because there is no trade-off here.
+
+## Querying a binary search tree
+
+Besides scheduling a landing time, we can also design a runway reservation system that has more information about scheduled landings, such as the most recent scheduled landing time or the least recent landing time. Using a binary search tree, we can support queries: $\text{search}$, $\text{minimum}$, $\text{maximum}$, $\text{successor}$, $\text{predecessor}$. Also, we will examine these operations and discuss how to make each one run in $O(h)$ on any binary search tree of height $h$.
+
+### Searching
+
+We use the $\text{search}$ algorithm to search for a node with a key $k$ in a binary search tree. Parameters to this function are a pointer to the root of the tree and a key $k$. The function returns a pointer to a node with a key $k$ if one exists; otherwise, it returns $\text{None}$.
+
+```python
+def recursive_search(x, k):
+    if x is None or k == x.key:
+        return x
+    elif k < x.key:
+        return recursive_search(x.left, k)
+    else:
+        return recursive_search(x.right, k)
+```
+
+The procedure begins its search at the root and traces a simple path downward in the tree. For each node $x$ it encounters, it compares key $k$ with $x.key$. If the two keys are equal, the search terminates and returns a pointer to node $x$ where $x.key = k$. If $k$ is smaller than $x.key$, the search continues on the left subtree of $x$ because the binary-search-tree property proves that $k$ could not be stored in the right subtree. Symmetrically, if $k$ is larger than $x.key$, the search continues on the right subtree. In the worst case, we go from the root to a leaf of the tree and may or may not find a node with key $k$. Hence, the running time of the searching procedure is $O(h)$, where $h$ is the height of the tree.
+
+
+
+```python
+def iterative_search(x, k):
+    while x is not None and k != x.key:
+        if k < x.key:
+            x = x.left
+        elif:
+            x = x.right
+    return x
+```
+
+|![Search for a node in BST]({{ site.url }}{{ site.baseurl }}/assets/images/bst/bst.png)|
+|:---:|
+|To search for the key $45$ in the tree, we follow the path $51 \rightarrow 43 \rightarrow 46 \rightarrow 45$ from the root|
+
+### Minimum and maximum
 
 
 References
