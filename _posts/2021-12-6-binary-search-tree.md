@@ -300,7 +300,7 @@ To get the logarithmic running time, we have to keep the binary search tree bala
 
 # Conclusion
 
-In this post, we defined the runway reservation problem and showed how arrays, linked lists, and hash tables cannot support insertion and deletion in $O(\lg n)$ time. Then, we defined the binary-search-tree property and illustrated basic operations on a binary search tree. The running time of these operations depends on the height of the binary search tree, which is not always $O(\lg n)$. In the next post, we will see how to keep a binary search tree balanced after inserting or deleting a node of it. A balanced tree shall give us the answer to the scheduling problem.
+In this post, we defined the runway reservation problem and showed how arrays, linked lists, and hash tables cannot support insertion and deletion in $O(\lg n)$ time. Then, we defined the binary-search-tree property and illustrated basic operations on a binary search tree. The running time of these operations depends on the height of the binary search tree, which is not always $O(\lg n)$. Therefore, we have not solved the problem yet. In the next post, we will see how to keep a binary search tree balanced after inserting or deleting a node of it. A balanced tree shall give us the answer to the scheduling problem.
 
 References
 ---
