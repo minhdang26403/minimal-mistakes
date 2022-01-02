@@ -6,5 +6,7 @@ layout: single
 
 ---
 
+# Web projects
 
-Coming soon
+[Netflix Landing Page Clone](https://wonderful-swirles-82777c.netlify.app/)
+
