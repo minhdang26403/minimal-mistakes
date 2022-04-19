@@ -13,3 +13,8 @@ layout: single
 - [To Do App with Firebase as Database](https://modest-jackson-662b5c.netlify.app/){:target="_blank"}
 
 - [Typing Test App using Random Quotes API](https://vibrant-goldwasser-57355b.netlify.app){:target="_blank"}
+
+# System projects
+
+- [LRU cache simulator](https://github.com/minhdang26403/cache-simulator){:target="_blank"}
+- [Simple Unix shell](https://github.com/minhdang26403/simple-unix-shell){:target="_blank"}
